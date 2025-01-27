@@ -1,10 +1,4 @@
-const getSinglePost = async (postId) => {
-   const response = await fetch(
-      `${process.env.NEXT_PUBLIC_WORDPRESS_API_URL}/posts/${postId}`
-   );
-   const post = await response.json();
-   return post;
-};
+import { getSinglePost } from "@/app/utils/getPosts";
 
 const page = async ({ params }) => {
    const post = await getSinglePost(params.postId);

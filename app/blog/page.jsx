@@ -1,12 +1,5 @@
 import Link from 'next/link';
-
-const getPosts = async() => {
-   const response = await fetch(
-      `${process.env.NEXT_PUBLIC_WORDPRESS_API_URL}/posts`
-   );
-   const posts = await response.json();
-   return posts;
-}
+import { getPosts } from './../utils/getPosts'
 
 const BlogPage = async () => {
    const posts = await getPosts();
@@ -15,14 +8,14 @@ const BlogPage = async () => {
          <h2>All Blog Posts</h2>
          <p>All blog posts are fetched from WordPress via the WP REST API.</p>
          <div className="posts">
-               {posts.map((post) => {
-                  return (
-                     <Link href={`/blog/${post.id}`} className="post" key={post.id}>
-                           <h3>{post.title.rendered}</h3>
-                           {post.excerpt.rendered}
-                     </Link>
-                  );
-               })}
+            {posts.map((post) => {
+               return (
+                  <Link href={`/blog/${post.id}`} className="post" key={post.id}>
+                     <h3>{post.title.rendered}</h3>
+                     {post.excerpt.rendered}
+                  </Link>
+               );
+            })}
          </div>
       </div>
    );

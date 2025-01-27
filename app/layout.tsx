@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google"; //Geist, Geist_Mono,
-import "./styles/globals.css";
+import "@/app/styles/globals.css";
 
 /*
 const geistSans = Geist({
@@ -15,9 +15,11 @@ const geistMono = Geist_Mono({
 */
 
 const poppins = Poppins({
-  weight: "400",
+  weight: ["400","500", "600","700", "800", "900"],
+  style: ["normal","italic"] ,
   subsets: ["latin"]
 });
+
 
 export const metadata: Metadata = {
   title: "CM Advogatus",
@@ -30,9 +32,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="scroll-smooth">
       {/*<body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>*/}
-      <body className={`${poppins} antialiased 2xl:text-2xl`}>
+      <body className={`${poppins} antialiased xl:text-xl`}>
         {children}
       </body>
     </html>
