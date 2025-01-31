@@ -40,19 +40,28 @@ const BlogPosts = async () => {
                   {posts.slice(0, 3).map((post) => (
                      <div key={post.id} className='w-full h-full overflow-hidden'>
                         <div className='
-                     p-5
-                        w-full 
-                        transition-transform 
-                        duration-1000 
-                        transform 
-                        md:hover:scale-105
-                     '>
+                           p-5
+                           max-w-[500px]
+                           max-h-[450px]
+                           transition-transform 
+                           duration-1000 
+                           transform 
+                           md:hover:scale-105
+                           overflow-hidden
+                        '>
                            <Link href={`/blog/${post.id}`} className="post">
                               <div className='overflow-y-hidden max-h-[200px]'>
-                                 {post._embedded['wp:featuredmedia'] && (
+                                 {post._embedded['wp:featuredmedia'] ? (
                                     <Image
                                        src={post._embedded['wp:featuredmedia'][0].media_details?.sizes?.medium?.source_url}
-                                       alt={post.title.rendered}
+                                       alt={`https://picsum.photos/id/${post.id}/500/300`}
+                                       width={500}
+                                       height={500}
+                                    />
+                                 ) : (
+                                    <Image
+                                       src={`https://picsum.photos/500/300`}
+                                       alt={`Imagem não disponível`}
                                        width={500}
                                        height={500}
                                     />
@@ -62,7 +71,7 @@ const BlogPosts = async () => {
                               <h3 className='pt-5 text-3xl font-bold truncate'>{post.title.rendered}</h3>
                               <p className='text-[#ad9366] text-sm'>{parsePostDate(post.date)}</p>
                               <p className='text-[#ad9366] text-sm'>Por {post._embedded?.author?.[0]?.name || 'Autor desconhecido'}</p>
-                              <div className='py-5 text-neutral-500 text-lg' dangerouslySetInnerHTML={{ __html: post.excerpt.rendered }} />
+                              <div className='py-5 text-neutral-500 text-lg text-ellipsis line-clamp-4 w-[100%] h-[100%]' dangerouslySetInnerHTML={{ __html: post.excerpt.rendered }} />
                            </Link>
                         </div>
                      </div>

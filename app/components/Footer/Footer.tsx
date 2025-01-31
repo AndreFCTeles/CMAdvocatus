@@ -1,28 +1,25 @@
-import React from 'react'
-import '@/app/styles/Footer.css'
+'use client';
+import React from 'react';
+import '@/app/styles/Footer.css';
+import {scrollPageToSection} from '@/app/utils/general';
+import { Contacts } from '@/app/utils/types';
 
 
-type PropType = {
-   tel: string;
-   email: string;
-   morada: string;
-}
-
-const Footer: React.FC<PropType> = ({tel, email, morada}) => {
+const Footer: React.FC<Contacts> = ({tel, email, morada, links}) => {
    return (
       <div className='footerContainer text-white'>
          <div className='
             grid
-            grid-cols-1 
-            sm:grid-cols-2 
-            lg:grid-cols-3 
-            gap-0 
-            min-h-[300px] 
+            grid-cols-1
+            sm:grid-cols-2
+            lg:grid-cols-3
+            gap-0
+            min-h-[300px]
             text-lg
          '>
             {/* CONTACTOS */}
             <div className='w-full h-full flex flex-col justify-between px-20 py-14' id='contactos'>
-               <h1 className='font-bold tracking-widest text-2xl'>Contactos</h1>            
+               <h1 className='font-bold tracking-widest text-2xl'>Contactos</h1>
                <p className='hero__data__contact shrink-0'>
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill='none' strokeWidth="1" stroke="currentColor" className="size-5 mr-2">
                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
@@ -42,18 +39,28 @@ const Footer: React.FC<PropType> = ({tel, email, morada}) => {
                      <path d="M22.5 6.908V6.75a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3v.158l9.714 5.978a1.5 1.5 0 0 0 1.572 0L22.5 6.908Z" />
                   </svg>
                   <span className='font-bold text-sm contact'>E-Mail:</span><span className='text-sm contact'>&nbsp;{email}</span>
-               </p>   
+               </p>
                <p>WIP - ícones redes sociais?</p>
             </div>
             
             {/* MAPA DO SITE */}
-            <div className='w-full h-full flex flex-col justify-between px-20 py-14'>
-               <p> WIP - mapa do site</p>
+            <div className='w-full h-full flex flex-col justify-items-start px-20 py-14'>
+               <h1 className='font-bold tracking-widest text-2xl'>Mapa do site</h1>
+               <ul className="pt-3">
+                  {links.map((link) => (
+                     <li key={link.targetId} className="">
+                        <button
+                        className='bg-transparent hover:bg-transparent text-[#bfbfbf] hover:text-[#ad9366]'
+                        onClick={() => scrollPageToSection(link.targetId)}>{link.label}</button>
+                     </li>
+                  ))}
+               </ul>
             </div>
             
             {/* NEWSLETTER */}
             <div className='w-full h-full flex flex-col justify-between px-20 py-14'>
-               <p> WIP - newsletter</p>
+               <p>WIP - newsletter</p>
+               <p>Decidir se necessário</p>
             </div>
          </div>
 

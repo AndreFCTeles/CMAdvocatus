@@ -10,11 +10,8 @@ import AboutEnterprise from '@/app/components/About/AboutEnterprise';
 import BlogPosts from '@/app/components/BlogPosts/BlogPosts'
 
 
-const LOGO = "/cmadvocatus/app/favicon.ico";
 const OPTIONS: EmblaOptionsType = { loop: true, duration: 30 };
-const SLIDE_COUNT = 5;
-const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
-const COLAB_COUNT = 5;
+const COLAB_COUNT = 3;
 const COLABS = Array.from(Array(COLAB_COUNT).keys());
 const TEL = 'xxx xxx xxx';
 const EMAIL = 'xxx-xxx@xxx.xx';
@@ -24,23 +21,24 @@ const Home = () => {
   const navLinks = [
     { label: 'Home', targetId: 'carousel' },
     { label: 'Blog', targetId: 'blog' },
-    { label: 'Acerca', targetId: 'about' },
-    { label: 'A Equipa', targetId: 'aboutTeam' },
+    { label: 'Acerca', targetId: 'acerca' },
+    { label: 'A Equipa', targetId: 'acercaEquipa' },
   ];
 
   return (
     <>
       <div className='header__wrapper'>
         <HeroContent tel={TEL} email={EMAIL} />
-        <Navbar logo={LOGO} links={navLinks} />
+        {/*<Navbar logo={LOGO} links={navLinks} />*/}
+        <Navbar links={navLinks} />
       </div>
-      <WelcomeCarousel slides={SLIDES} options={OPTIONS} />
+      <WelcomeCarousel options={OPTIONS} />
       <QuickGrid />
       <BlogPosts />
       <AboutEnterprise />
       <AboutTeam colab={COLABS} />
       <Contact />
-      <Footer tel={TEL} email={EMAIL} morada={MOR} />
+      <Footer tel={TEL} email={EMAIL} morada={MOR} links={navLinks} />
     </>
   );
 }

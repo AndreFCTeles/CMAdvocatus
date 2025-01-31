@@ -1,24 +1,86 @@
+import React from 'react';
 import Link from 'next/link';
-import { getPosts } from './../utils/getPosts'
+import Image from 'next/image';
+import { getPosts, parsePostDate } from '@/app/utils/getPosts';
 
 const BlogPage = async () => {
    const posts = await getPosts();
+   const nPosts = posts.length;
+
    return (
-      <div className="blog-page">
-         <h2>All Blog Posts</h2>
-         <p>All blog posts are fetched from WordPress via the WP REST API.</p>
-         <div className="posts">
-            {posts.map((post) => {
-               return (
-                  <Link href={`/blog/${post.id}`} className="post" key={post.id}>
-                     <h3>{post.title.rendered}</h3>
-                     {post.excerpt.rendered}
-                  </Link>
-               );
-            })}
-         </div>
-      </div>
-   );
-};
+      <>
+         {posts.length !== 0 && (
+            <div
+               id="blog"
+               className="
+               w-full 
+               px-16 
+               pt-16
+               justify-center
+               justify-items-center
+               items-center 
+            ">
+
+               <p className='text-sm text-neutral-500 pt-20'>BLOG</p>
+               <h1 className="text-3xl pb-7 font-bold">Artigos recentes</h1>
+
+               <hr className="customDivider my-10" />
+
+               <div className={`
+                  p-5    
+                  w-full    
+                  h-full
+                  grid
+                  grid-cols-1 
+                  md:${nPosts <= 2 ? 'grid-cols-' + nPosts : 'grid-cols-2'}
+                  xl:${nPosts <= 3 ? 'grid-cols-' + nPosts : 'grid-cols-3'}
+                  gap-10
+               `}>
+
+                  {posts.slice(0, 3).map((post) => (
+                     <div key={post.id} className='w-full h-full overflow-hidden'>
+                        <div className='
+                           p-5
+                           max-w-[500px]
+                           max-h-[450px]
+                           transition-transform 
+                           duration-1000 
+                           transform 
+                           md:hover:scale-105
+                           overflow-hidden
+                        '>
+                           <Link href={`/blog/${post.id}`} className="post">
+                              <div className='overflow-y-hidden max-h-[200px]'>
+                                 {post._embedded['wp:featuredmedia'] ? (
+                                    <Image
+                                       src={post._embedded['wp:featuredmedia'][0].media_details?.sizes?.medium?.source_url}
+                                       alt={`https://picsum.photos/id/${post.id}/500/300`}
+                                       width={500}
+                                       height={500}
+                                    />
+                                 ) : (
+                                    <Image
+                                       src={`https://picsum.photos/500/300`}
+                                       alt={`Imagem não disponível`}
+                                       width={500}
+                                       height={500}
+                                    />
+                                 )}
+
+                              </div>
+                              <h3 className='pt-5 text-3xl font-bold truncate'>{post.title.rendered}</h3>
+                              <p className='text-[#ad9366] text-sm'>{parsePostDate(post.date)}</p>
+                              <p className='text-[#ad9366] text-sm'>Por {post._embedded?.author?.[0]?.name || 'Autor desconhecido'}</p>
+                              <div className='py-5 text-neutral-500 text-lg text-ellipsis line-clamp-4 w-[100%] h-[100%]' dangerouslySetInnerHTML={{ __html: post.excerpt.rendered }} />
+                           </Link>
+                        </div>
+                     </div>
+                  ))}
+               </div>
+            </div>
+         )}
+      </>
+   )
+}
 
 export default BlogPage;

@@ -2,15 +2,15 @@ import React from 'react'
 import '@/app/styles/AboutEnterprise.css'
 
 const AboutEnterprise: React.FC= () => {
-   return (      
-      <div 
-      id="about"
+   return (
+      <div
+      id="acerca"
       className="
          w-full
          pt-10
          min-h-[500px]
          grid
-         grid-cols-1 
+         grid-cols-1
          md:grid-cols-2
       ">
          <div className="

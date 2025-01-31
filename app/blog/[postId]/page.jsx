@@ -9,7 +9,7 @@ const page = async ({ params }) => {
       <div className="single-blog-page">
          <h2>{post.title.rendered}</h2>
          <div className="blog-post">
-            {post.excerpt.rendered}
+            <div className='py-5 text-neutral-500 text-lg w-[100%] h-[100%]' dangerouslySetInnerHTML={{ __html: post.content.rendered }} />
          </div>
       </div>
    );

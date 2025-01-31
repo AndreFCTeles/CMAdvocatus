@@ -1,7 +1,8 @@
+'use client';
 import React from 'react';
 import { GoLaw, GoBriefcase, GoGlobe } from "react-icons/go";
 import '@/app/styles/QuickGrid.css';
-
+import { scrollPageToSection } from '@/app/utils/general';
 
 
 const QuickGrid = () => {
@@ -15,7 +16,7 @@ const QuickGrid = () => {
          text-lg
       ">
          <div className='w-full h-full overflow-hidden'>
-            <a href='#carousel'>
+            <a onClick={() => scrollPageToSection('acercaEquipa')}>
                <div className="
                   w-full 
                   h-full 
@@ -55,7 +56,7 @@ const QuickGrid = () => {
          </div>
          
          <div className='w-full h-full overflow-hidden'>
-            <a href='#'>
+            <a onClick={() => scrollPageToSection('contactos')}>
                <div className="
                   w-full 
                   h-full 
@@ -68,7 +69,8 @@ const QuickGrid = () => {
                   duration-1000 
                   transform 
                   md:hover:scale-125
-               ">
+               "
+               >
                   <div className='
                      w-full 
                      h-full 
@@ -98,7 +100,7 @@ const QuickGrid = () => {
 
          
          <div className='w-full h-full overflow-hidden'>
-            <a href='#trueFooter'>
+            <a onClick={() => scrollPageToSection('acerca')}>
                <div className="
                   w-full 
                   h-full 

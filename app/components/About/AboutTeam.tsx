@@ -9,15 +9,15 @@ const AboutTeam: React.FC<PropType> = (props) => {
    const {colab} = props;
    return (
       <div 
-      id="aboutTeam"
+      id="acercaEquipa"
       className='
-         p-10         
+         p-10
          grid
          grid-cols-1 
          md:grid-cols-2
          xl:grid-cols-3
          gap-10
-      '>   
+      '>
          {colab.map((index) => (
             <div key={index} className="h-96 relative">
                <Image

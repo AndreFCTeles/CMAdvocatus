@@ -23,6 +23,7 @@ body {
   background: var(--background);
   font-family: poppins, system-ui, Arial, Helvetica, sans-serif;
   width: 100%;
+  overflow-x: hidden;
 }
 
 button {
@@ -51,4 +52,9 @@ a:active {
 
 .imgOverlay {
   background-color: rgba(0, 0, 0, 0.7);
+}
+
+img {
+  object-fit: cover;
+  justify-content: center;
 }
