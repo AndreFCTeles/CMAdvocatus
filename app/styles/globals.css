@@ -1,6 +1,31 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+/*
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+}
+  */
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+
+@layer base {
+
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
 
 :root {
   --background: rgb(255, 255, 255);
@@ -29,6 +54,7 @@ body {
 button {
   background-color: rgb(173, 147, 102);
   border-radius: 2px;
+  cursor: pointer;
 }
 
 button:hover {
@@ -43,11 +69,35 @@ a:active {
   background-color: rgb(173, 147, 102)
 }
 
+a.agendarLink {
+  background-color: rgb(173, 147, 102);
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+a.agendarLink:hover {
+  background-color: rgb(204, 174, 121)
+}
+
+a.agendarLink:active {
+  background-color: rgb(173, 147, 102)
+}
+
+a.blogBack {
+  color: white;
+  background-color: rgb(173, 147, 102);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+a.blogBack:hover {
+  background-color: rgb(204, 174, 121)
+}
+
 .customDivider {
   border: 1px solid rgb(173, 147, 102);
   width: 10%;
-  margin-top: 3%;
-  margin-bottom: 2%;
 }
 
 .imgOverlay {
@@ -57,4 +107,16 @@ a:active {
 img {
   object-fit: cover;
   justify-content: center;
+}
+
+input {
+  border-radius: 5px;
+}
+
+input:invalid {
+  border: 2px solid crimson;
+}
+
+input:invalid {
+  border: 1px solid black;
 }

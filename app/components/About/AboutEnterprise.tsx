@@ -1,31 +1,58 @@
-import React from 'react'
-import '@/app/styles/AboutEnterprise.css'
+'use client';
+import React from 'react';
+import { gql, useQuery } from "@apollo/client";
 
-const AboutEnterprise: React.FC= () => {
+const GET_ACERCA_DATA = gql`
+   query GetAcerca {
+      page(id: "/acerca-empresa/", idType: URI) {
+         acercaEmpresa {
+            imagem {
+               node {
+                  sourceUrl
+               }
+            }
+            titulo
+            textoconteudo
+            subtitulo
+         }
+      }
+   }
+`;
+
+const AboutEnterprise: React.FC = () => {
+   const { data, loading, error } = useQuery(GET_ACERCA_DATA);
+   if (loading) {console.log("loading");}
+   if (error) {console.log("error loading about data");}
+
+   const dados = data?.page.acercaEmpresa;
+   const imgUrl = dados?.imagem
+      ? dados.imagem.node.sourceUrl
+      : 'https://picsum.photos/1920/1080';
+   
    return (
-      <div
-      id="acerca"
-      className="
-         w-full
-         pt-10
-         min-h-[500px]
-         grid
-         grid-cols-1
-         md:grid-cols-2
-      ">
-         <div className="
-            bg-center
-            bg-cover
-            bg-[url('https://picsum.photos/2000/')]
-            bg-fixed
-            w-full
-         " />
-         <div className='w-full p-16'>
-            <h2 className='text-neutral-400 italic text-lg pb-5'>Quem somos</h2>
-            <h1 className='font-black text-5xl pb-10'>CM ADVOCATUS</h1>
-            <p>Phasellus lacus augue, molestie at sodales id, vestibulum a enim. Maecenas et sapien quis leo semper blandit. Vivamus vel nulla magna. Ut tempor eros ac lectus efficitur, quis aliquet lectus pellentesque. Vestibulum aliquam a diam non eleifend. Cras laoreet orci massa, eu commodo urna pulvinar sit amet. Ut ac laoreet leo, a vehicula turpis. Donec fermentum ultricies mattis. Donec tincidunt nisl eget est varius hendrerit. Integer at sem volutpat, ullamcorper diam sit amet, finibus lorem. Nullam et varius sem. Donec congue ac mi ut congue. Cras elit purus, aliquet at rhoncus ut, gravida sagittis enim. Phasellus iaculis, nibh sit amet tincidunt rutrum, arcu metus iaculis sapien, eu mollis risus ipsum id sapien. Vestibulum ac dignissim ligula. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
-         </div>
-      </div>
+      <>
+         {data && (
+            <div
+            id="acerca"
+            className="
+               w-full
+               pt-10
+               grid
+               grid-cols-1
+               md:grid-cols-2
+            ">
+               <div 
+               className="bg-center bg-cover bg-fixed w-full" 
+               style={{ backgroundImage: `url(${imgUrl})`}} 
+               />
+               <div className='w-full p-16'>
+                  <h2 className='text-neutral-400 italic text-lg pb-5 uppercase'>{dados.subTitulo}</h2>
+                  <h1 className='font-black text-5xl pb-10 uppercase'>{dados.titulo}</h1>
+                  <p className='text-sm text-neutral-600 pr-28' dangerouslySetInnerHTML={{ __html: dados.textoconteudo }} />
+               </div>
+            </div>
+         )}
+      </>
    )
 }
 

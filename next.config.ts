@@ -1,6 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  assetPrefix:"https://cmadvocatus.com",
+  distDir: "build",
+  env: {
+    NEXT_PUBLIC_FRONTEND_URL: process.env.NEXT_PUBLIC_FRONTEND_URL,
+    NEXT_PUBLIC_WPGRAPHQL_URL: process.env.NEXT_PUBLIC_WPGRAPHQL_URL
+  },
   images: {
     remotePatterns: [
       {
@@ -9,18 +15,8 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       },
       {
-        protocol: 'http',
-        hostname: 'cmadvocatus.test',
-        pathname: '/**',
-      },
-      {
         protocol: 'https',
         hostname: 'cmadvocatus.com',
-        pathname: '/**',
-      },
-      {
-        protocol: 'http',
-        hostname: 'localhost',
         pathname: '/**',
       },
     ],

@@ -9,3 +9,14 @@
 .contact {
    color: rgb(191, 191, 191);
 }
+
+.mapa a {
+   background: none;
+   border: none;
+   cursor: pointer;
+   transition: color 0.3s ease;
+}
+
+.mapa a:hover {
+   color: rgb(204, 174, 121)
+}

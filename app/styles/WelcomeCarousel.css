@@ -1,4 +1,5 @@
 .embla {
+   position: relative;
    width: 100vw;
    height: 100vh;
    margin: 0;
@@ -80,6 +81,33 @@
 
 .embla__button:hover {
    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.carouselLoader {
+   position: absolute;
+   border: 10px solid rgb(243, 243, 243);
+   border-top: 10px solid rgb(173, 147, 102);
+   border-radius: 50%;
+   height: 80px;
+   width: 80px;
+   animation: spin 1s linear infinite;
+   padding: calc(50%-40px);
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   margin: auto;
+}
+
+
+@keyframes spin {
+   0% {
+      transform: rotate(0deg);
+   }
+
+   100% {
+      transform: rotate(360deg);
+   }
 }
 
 /* Hide buttons for small screens */

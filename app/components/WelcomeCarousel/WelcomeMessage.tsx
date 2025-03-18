@@ -8,14 +8,14 @@ const WelcomeCarouselOverlay: React.FC<OverlayData> = ({title, subtitle, descrip
 
    return (
       <div className="message">
-         <h2 className="text-[#ad9366] text-2xl md:text-5xl font-semibold tracking-wider">
+         <h2 className="text-[#ad9366] text-xl md:text-4xl font-medium tracking-wider uppercase">
             {subtitle}
          </h2>
-         <hr className="customDivider mt-5" />
-         <h1 className="pt-5 text-center text-5xl md:text-7xl xl:text-8xl font-bold tracking-wide">
+         <hr className="customDivider mt-10 mb-10" />
+         <h1 className="mt-7 text-center text-5xl md:text-7xl xl:text-8xl font-bold tracking-wide uppercase">
             {title}
          </h1>
-         <p className="pt-10 pb-14 text-center w-[50%] xl:w-[30%]">{description}</p>
+         <p className="pt-5 pb-14 text-md font-slim text-center w-[50%] xl:w-[50%]">{description}</p>
          <button
          type="button"
          onClick={() => scrollPageToSection(buttonLink)}

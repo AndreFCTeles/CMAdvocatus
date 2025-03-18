@@ -1,28 +1,74 @@
+'use client';
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { getPosts, parsePostDate } from '@/app/utils/getPosts';
+import { gql, useQuery } from '@apollo/client';
+import { parsePostDate } from '@/app/utils/general';
+import HeroContent from '@/app/components/HeroContent/HeroContent';
+import Navbar from '@/app/navbar';
+import Footer from '@/app/components/Footer/Footer';
 
-const BlogPage = async () => {
-   const posts = await getPosts();
+
+const GET_POSTS = gql`
+   query GetPosts {
+      posts {
+         nodes {
+            id
+            title
+            date
+            excerpt
+            featuredImage {
+               node {
+                  mediaDetails {
+                     sizes {
+                        width
+                        sourceUrl
+                     }
+                  }
+               }
+            }
+            author {
+               node {
+                  name
+               }
+            }
+         }
+      }
+   }
+`;
+
+const BlogPage = () => {
+   const { data, loading, error } = useQuery(GET_POSTS);
+
+   const posts = data?.posts?.nodes || [];
    const nPosts = posts.length;
+   const navLinks = [
+      { label: 'Home', targetId: 'carousel' },
+      { label: 'Blog', targetId: 'blog' },
+      { label: 'Acerca', targetId: 'acerca' },
+      { label: 'A Equipa', targetId: 'acercaEquipa' },
+   ];
 
    return (
       <>
-         {posts.length !== 0 && (
+         <div className='header__wrapper'>
+            <HeroContent onBlog={true} />
+            <Navbar links={navLinks} onBlog={true} />
+         </div>
+         {nPosts !== 0 && (
             <div
                id="blog"
                className="
                w-full 
                px-16 
-               pt-16
+               pt-24
                justify-center
                justify-items-center
                items-center 
             ">
 
-               <p className='text-sm text-neutral-500 pt-20'>BLOG</p>
-               <h1 className="text-3xl pb-7 font-bold">Artigos recentes</h1>
+               <p className='text-lg text-neutral-500 pt-20'>BLOG</p>
+               <h1 className="text-6xl pb-7 font-bold">Todos os artigos</h1>
 
                <hr className="customDivider my-10" />
 
@@ -37,48 +83,50 @@ const BlogPage = async () => {
                   gap-10
                `}>
 
-                  {posts.slice(0, 3).map((post) => (
-                     <div key={post.id} className='w-full h-full overflow-hidden'>
-                        <div className='
-                           p-5
-                           max-w-[500px]
-                           max-h-[450px]
-                           transition-transform 
-                           duration-1000 
-                           transform 
-                           md:hover:scale-105
-                           overflow-hidden
-                        '>
-                           <Link href={`/blog/${post.id}`} className="post">
-                              <div className='overflow-y-hidden max-h-[200px]'>
-                                 {post._embedded['wp:featuredmedia'] ? (
-                                    <Image
-                                       src={post._embedded['wp:featuredmedia'][0].media_details?.sizes?.medium?.source_url}
-                                       alt={`https://picsum.photos/id/${post.id}/500/300`}
-                                       width={500}
-                                       height={500}
-                                    />
-                                 ) : (
-                                    <Image
-                                       src={`https://picsum.photos/500/300`}
-                                       alt={`Imagem não disponível`}
-                                       width={500}
-                                       height={500}
-                                    />
-                                 )}
+                  {posts.map((post) => {
+                     let imageUrl = "https://picsum.photos/500/300";
+                     if (
+                        post.featuredImage
+                     ) {
+                        const sizesObj = post.featuredImage.node.mediaDetails.sizes;
+                        const mediumSizeObj = Object.values(sizesObj).find(
+                           (size) => size.width === "300"
+                        );
+                        if (mediumSizeObj && mediumSizeObj.sourceUrl) {
+                           imageUrl = mediumSizeObj.sourceUrl;
+                        }
+                     }
 
-                              </div>
-                              <h3 className='pt-5 text-3xl font-bold truncate'>{post.title.rendered}</h3>
-                              <p className='text-[#ad9366] text-sm'>{parsePostDate(post.date)}</p>
-                              <p className='text-[#ad9366] text-sm'>Por {post._embedded?.author?.[0]?.name || 'Autor desconhecido'}</p>
-                              <div className='py-5 text-neutral-500 text-lg text-ellipsis line-clamp-4 w-[100%] h-[100%]' dangerouslySetInnerHTML={{ __html: post.excerpt.rendered }} />
-                           </Link>
+                     return (
+                        <div key={post.id} className="w-full h-full overflow-hidden">
+                           <div className="p-5 max-w-[500px] max-h-[450px] transition-transform duration-1000 transform md:hover:scale-105 overflow-hidden">
+                              <Link href={`/blog/${post.id}`} className="post">
+                                 <div className="overflow-y-hidden max-h-[200px]">
+                                    <Image
+                                       src={imageUrl}
+                                       alt={`Imagem do post ${post.id}`}
+                                       width={500}
+                                       height={500}
+                                    />
+                                 </div>
+                                 <h3 className="pt-5 pb-2 text-3xl font-bold truncate">{post.title}</h3>
+                                 <p className="text-[#ad9366] text-xs">{parsePostDate(post.date)}</p>
+                                 <p className="text-[#ad9366] text-xs">
+                                    Por {post.author && post.author.node ? post.author.node.name : 'Autor desconhecido'}
+                                 </p>
+                                 <div
+                                    className="my-3 text-neutral-500 text-sm line-clamp-4"
+                                    dangerouslySetInnerHTML={{ __html: post.excerpt }}
+                                 />
+                              </Link>
+                           </div>
                         </div>
-                     </div>
-                  ))}
+                     );
+                  })}
                </div>
             </div>
          )}
+         <Footer links={navLinks} onBlog={true} />
       </>
    )
 }

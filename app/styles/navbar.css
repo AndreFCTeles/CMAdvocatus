@@ -10,6 +10,10 @@
    z-index: 11;
 }
 
+.navbar a {
+   color: white;
+}
+
 .navbar a:hover {
    color: rgb(204, 174, 121)
 }

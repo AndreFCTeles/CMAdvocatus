@@ -1,42 +1,104 @@
 'use client';
-import React, { useState } from 'react'; //, { useState } 
-//import Image from 'next/image';
-import {scrollPageToSection} from '@/app/utils/general';
+import React, { useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { gql, useQuery } from "@apollo/client";
+import { scrollPageToSection } from '@/app/utils/general';
 import '@/app/styles/navbar.css'
+
 
 
 type NavLink = {
    label: string;
-   targetId: string; // ID of the target section
+   targetId: string;
 };
 
 type NavbarProps = {
-   //logo: string; // Path to the logo image
    links: NavLink[];
+   onBlog: boolean;
 };
 
+const GET_LOGO = gql`   
+   query GetLogo {
+      page(id: "/dados-gerais/", idType: URI) {
+         elementosGerais {
+            logo {
+               node {
+                  sourceUrl
+               }
+            }
+         }
+      }
+   }
+`;
 
-const Navbar: React.FC<NavbarProps> = ({ links }) => {
-   const [nav, setNav] = useState(false);
+const Navbar: React.FC<NavbarProps> = ({ links, onBlog }) => {
+   const { data, loading, error } = useQuery(GET_LOGO);
+   const [nav, setNav] = useState<boolean>(false);
 
    const showNav = () => {
       setNav(!nav);
    };
-
+   //console.log(data)
+   
+   const logoImg: string | null =
+      !loading && !error && 
+      data?.page.elementosGerais?.logo ? 
+      data.page.elementosGerais.logo.node.sourceUrl : null;
 
    return (
       <>
          <div className='navbar'>
             <div className="navbar__logo">
-               <a onClick={() => {scrollPageToSection('carousel')}}>
-                  <div className='flex content-center items-center'>
-                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="#ad9366" className="size-14">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0 0 12 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75Z" />
-                     </svg>
-                     {/* <Image width={200} height={50} src={logo} alt="Logo" />*/}
-                     Logotipo
-                  </div>
-               </a>
+               { !onBlog ? 
+                  <a onClick={() => {scrollPageToSection('carousel')}}>
+                     {!logoImg ? 
+                        <div className='flex content-center items-center'>
+                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="#ad9366" className="size-14">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0 0 12 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75Z" />
+                           </svg>
+                           Logotipo
+                        </div>
+                     : 
+                        <div className='max-h[55px] max-w-[140px] flex content-center items-center'>
+                           <Image 
+                           src={logoImg} 
+                           width={140}
+                           height={55}
+                           style={{ 
+                              width: '140px', 
+                              height: '55px',
+                              objectFit: "cover"
+                           }}
+                           alt='Logotipo' />
+                        </div>
+                     }
+                  </a>
+               :
+                  <Link href={'/#carousel'}>
+                     {!logoImg ? 
+                        <div className='flex content-center items-center'>
+                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="#ad9366" className="size-14">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0 0 12 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75Z" />
+                           </svg>
+                           Logotipo
+                        </div>
+                     : 
+                        <div className='max-h[55px] max-w-[140px] flex content-center items-center'>
+                           <Image 
+                           src={logoImg} 
+                           width={140}
+                           height={55}
+                           style={{ 
+                              width: '140px', 
+                              height: '55px',
+                              objectFit: "cover"
+                           }}
+                           alt='Logotipo' />
+                        </div>
+                     }
+                  </Link>
+               }
             </div>
 
             {/* desktop nav */}
@@ -44,7 +106,12 @@ const Navbar: React.FC<NavbarProps> = ({ links }) => {
                <ul className="navbar__links flex gap-[1.5rem]">
                   {links.map((link) => (
                      <li key={link.targetId} className="navbar__link">
-                        <button onClick={() => scrollPageToSection(link.targetId)}>{link.label}</button>
+                        {!onBlog && (<button onClick={() => scrollPageToSection(link.targetId)}>{link.label}</button>)}
+                        {onBlog && (
+                           <Link
+                           className='text-[#bfbfbf] hover:text-[#ad9366]'
+                           href={'/#'+link.targetId}>{link.label}</Link>
+                        )}
                      </li>
                   ))}
                </ul>
@@ -90,8 +157,8 @@ const Navbar: React.FC<NavbarProps> = ({ links }) => {
             w-full 
             top-[100px]
             ${
-               nav ? 
-               "bg-neutral-900 h-fit"
+               nav 
+               ? "bg-neutral-900 h-fit"
                : "h-0"
             }`}>
                <ul className={`
@@ -104,7 +171,12 @@ const Navbar: React.FC<NavbarProps> = ({ links }) => {
                ${nav ? "text-white z-40" : "text-[#00000000] z-[-5]"}`}>
                   {links.map((link) => (
                      <li key={link.targetId} className="navbar__link">
-                        <button onClick={() => scrollPageToSection(link.targetId)}>{link.label}</button>
+                        {!onBlog && (<button onClick={() => scrollPageToSection(link.targetId)}>{link.label}</button>)}
+                        {onBlog && (
+                           <Link
+                           className='text-[#bfbfbf] hover:text-[#ad9366]'
+                           href={'/#'+link.targetId}>{link.label}</Link>
+                        )}
                      </li>
                   ))}
                </ul>

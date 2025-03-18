@@ -7,7 +7,7 @@ export type Contacts = {
    tel: string;
    email: string;
    morada: string;
-   links: NavLink[];
+   links?: NavLink[];
 }
 
 export type SlidesData = {
@@ -15,6 +15,31 @@ export type SlidesData = {
    title: string;
    imageUrl: string;
 }
+
+export type GraphQLSlide = {
+   id: string;
+   title: string;
+   featuredImage?: {
+      node: {
+         sizes?: string;
+         sourceUrl: string;
+         id: string;
+      };
+   } | null;
+};
+
+export type GraphQLCollab = {
+   acercaEquipa: {
+      cargo: string;
+      desc: string;
+      nome: string;
+      foto?: {
+         node: {
+            sourceUrl: string;
+         }
+      }
+   }
+};
 
 export type OverlayData = {
    title: string;
@@ -31,4 +56,37 @@ export type QuickGridItem = {
    icon: string;
    buttonLink: string;
    imageUrl: string;
+};
+
+export type AboutEnterpriseContent = {
+   subTitle: string;
+   title: string;
+   content: string;
+   bgImgUrl: string;
+};
+
+export type AboutTeamContent = {
+   name: string;
+   role: string;
+   desc: string;
+   imgUrl: string;
+};
+
+
+export type PostData = {
+   id: string;
+   title: string;
+   date: string;
+   content: string;
+   excerpt: string;
+   featuredImage?: {
+      node: {
+         sourceUrl: string;
+      };
+   };
+   author: {
+      node: {
+         name: string;
+      };
+   };
 };
