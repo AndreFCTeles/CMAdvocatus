@@ -22,7 +22,6 @@ app.prepare().then(() => {
       console.log(`Next.js custom server running explicitly on port ${port}`);
    });
 })
-*/
 
 
 import next from 'next';
@@ -41,31 +40,73 @@ app.prepare().then(() => {
       console.log(`🐎 => Ready on http://localhost:${port}`);
    });
 })
+*/
 
 /*
-import { createServer } from 'http'
-import { parse } from 'url'
-import next from 'next'
+import { createServer } from 'http';
+import { parse } from 'url';
+import next from 'next';
+import { join } from "path";
+import { existsSync, createReadStream } from "fs";
 
-const port = parseInt(process.env.PORT || '3000', 10)
-const dev = process.env.NODE_ENV !== 'production'
-const app = next({ dev })
-const handle = app.getRequestHandler()
+const port = parseInt(process.env.PORT || '3000', 10);
+const dev = process.env.NODE_ENV !== 'production';
+const app = next({ dev });
+const handle = app.getRequestHandler();
+
+const getContentType = (ext) => {
+   switch (ext) {
+      case ".js":
+         return "application/javascript";
+      case ".css":
+         return "text/css";
+      default:
+         return "application/octet-stream";
+   }
+};
 
 app.prepare().then(() => {
+   let current = new Date().toLocaleString();
    createServer((req, res) => {
-      const parsedUrl = parse(req.url, true)
-      handle(req, res, parsedUrl)
-   }).listen(port)
-   
-   console.log(
-      `> Server listening at http://localhost:${port} as ${
-         dev ? 'development' : process.env.NODE_ENV
-      }`
-   )
-})
-  */
+      const parsedUrl = parse(req.url, true);
+      const { pathname } = parsedUrl;
 
+      // 🔹 Serve Next.js static assets manually
+      if (pathname.startsWith("/_next/static/")) {
+         const filePath = join(".next", pathname.replace("/_next", ""));
+         if (existsSync(filePath)) {
+            const ext = extname(filePath);
+            res.writeHead(200, { "Content-Type": getContentType(ext) });
+            createReadStream(filePath).pipe(res);
+            return;
+         } else {
+            res.writeHead(404);
+            res.end("Not Found");
+            return;
+         }
+      }
+
+      // 🔹 Handle public assets (Optional)
+      if (pathname.startsWith("/public/")) {
+         const filePath = join("public", pathname.replace("/public/", ""));
+         if (existsSync(filePath)) {
+            res.writeHead(200);
+            createReadStream(filePath).pipe(res);
+            return;
+         }
+      }
+
+      // 🔹 Let Next.js handle everything else
+      handle(req, res, parsedUrl);
+
+      // 🔹 Debugging logs
+      console.log(`${current} > req.url: ${req.url}`);
+      console.log(`${current} > Parsed URL: ${JSON.stringify(parsedUrl)}`);
+   }).listen(port, () => {
+      console.log(`${current} > Server listening at http://localhost:${port} as ${dev ? "development" : process.env.NODE_ENV} 🐎`);
+   });
+});
+*/
 
 
 /*

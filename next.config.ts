@@ -1,8 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  assetPrefix:"https://cmadvocatus.com",
-  distDir: "build",
   env: {
     NEXT_PUBLIC_FRONTEND_URL: process.env.NEXT_PUBLIC_FRONTEND_URL,
     NEXT_PUBLIC_WPGRAPHQL_URL: process.env.NEXT_PUBLIC_WPGRAPHQL_URL
