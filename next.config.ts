@@ -17,6 +17,11 @@ const nextConfig: NextConfig = {
         hostname: 'cmadvocatus.com',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'cms.cmadvocatus.com',
+        pathname: '/**',
+      },
     ],
   },
 };
