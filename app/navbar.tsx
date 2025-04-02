@@ -36,10 +36,7 @@ const Navbar: React.FC<NavbarProps> = ({ links, onBlog }) => {
    const { data, loading, error } = useQuery(GET_LOGO);
    const [nav, setNav] = useState<boolean>(false);
 
-   const showNav = () => {
-      setNav(!nav);
-   };
-   //console.log(data)
+   const showNav = () => { setNav(!nav); };
    
    const logoImg: string | null =
       !loading && !error && 
@@ -52,7 +49,7 @@ const Navbar: React.FC<NavbarProps> = ({ links, onBlog }) => {
             <div className="navbar__logo">
                { !onBlog ? 
                   <a onClick={() => {scrollPageToSection('carousel')}}>
-                     {!logoImg ? 
+                     { !logoImg ? 
                         <div className='flex content-center items-center'>
                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="#ad9366" className="size-14">
                               <path strokeLinecap="round" strokeLinejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0 0 12 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75Z" />
