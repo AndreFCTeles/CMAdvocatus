@@ -72,6 +72,23 @@ const BlogPage = () => {
 
                <hr className="customDivider my-10" />
 
+               <Link
+                  href={`/blog`}
+                  className="
+                  px-4
+                  text-sm 
+                  text-[#ad9366] 
+                  hover:text-white 
+                  border-2 
+                  rounded-sm   
+                  border-white 
+                  hover:border-[#ad9366] 
+                  hover:bg-[#ad9366] 
+                  transition-colors
+               ">Voltar a início</Link>
+
+               <hr className="customDivider my-10" />
+
                <div className={`
                   p-5    
                   w-full    
