@@ -47,15 +47,16 @@ const BlogPosts = () => {
                id="blog"
                className="
                w-full 
-               px-16 
-               pt-16
+               px-16
+               pt:5
+               md:pt-16
                justify-center
                justify-items-center
                items-center 
             ">
 
                <p className='text-sm text-neutral-500 pt-20'>BLOG</p>
-               <h1 className="text-3xl pb-3 font-bold">Artigos recentes</h1>
+               <h1 className="text-3xl pb-3 font-bold text-center">Artigos recentes</h1>
 
                <Link
                   href={`/blog`}
@@ -87,9 +88,7 @@ const BlogPosts = () => {
 
                   {nPosts > 3 && posts.slice(0, 3).map((post) => {
                      let imageUrl = "https://picsum.photos/500/300"; // fallback image
-                     if (
-                        post.featuredImage
-                     ) {
+                     if (post.featuredImage) {
                         const sizesObj = post.featuredImage.node.mediaDetails.sizes;
                         const mediumSizeObj = Object.values(sizesObj).find(
                            (size) => size.width === "300"
@@ -101,7 +100,7 @@ const BlogPosts = () => {
 
                      return (
                         <div key={post.id} className="w-full h-full overflow-hidden">
-                           <div className="p-5 max-w-[500px] max-h-[450px] transition-transform duration-1000 transform md:hover:scale-105 overflow-hidden">
+                           <div className="px-2 md:px-5 py-2 md:py-5 max-w-[500px] max-h-[450px] transition-transform duration-1000 transform md:hover:scale-105 overflow-hidden">
                               <Link href={`/blog/${post.id}`} className="post">
                                  <div className="overflow-y-hidden max-h-[200px]">
                                     <Image

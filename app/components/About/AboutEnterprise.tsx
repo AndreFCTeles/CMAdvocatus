@@ -36,7 +36,8 @@ const AboutEnterprise: React.FC = () => {
             id="acerca"
             className="
                w-full
-               pt-10
+               pt-5
+               md:pt-10
                grid
                grid-cols-1
                md:grid-cols-2
@@ -48,7 +49,7 @@ const AboutEnterprise: React.FC = () => {
                <div className='w-full p-16'>
                   <h2 className='text-neutral-400 italic text-lg pb-5 uppercase'>{dados.subTitulo}</h2>
                   <h1 className='font-black text-5xl pb-10 uppercase'>{dados.titulo}</h1>
-                  <p className='text-sm text-neutral-600 pr-28' dangerouslySetInnerHTML={{ __html: dados.textoconteudo }} />
+                  <p className='text-sm text-neutral-600 md:pr-28' dangerouslySetInnerHTML={{ __html: dados.textoconteudo }} />
                </div>
             </div>
          )}

@@ -68,12 +68,10 @@ const BlogPage = () => {
             ">
 
                <p className='text-lg text-neutral-500 pt-20'>BLOG</p>
-               <h1 className="text-6xl pb-7 font-bold">Todos os artigos</h1>
-
-               <hr className="customDivider my-10" />
+               <h1 className="text-6xl pb-7 font-bold text-center">Todos os artigos</h1>
 
                <Link
-                  href={`/blog`}
+                  href={`/`}
                   className="
                   px-4
                   text-sm 

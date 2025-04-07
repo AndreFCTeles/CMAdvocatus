@@ -46,7 +46,7 @@ const Footer: React.FC<FooterProps> = ({links, onBlog}) => {
             text-lg
          '>
             {/* CONTACTOS */}
-            <div className='w-full h-full flex flex-col justify-between gap-1 px-20 py-14' id='contactos'>
+            <div className='w-full h-full flex flex-col justify-between gap-1 px-5 md:px-20 py-5 md:py-14' id='contactos'>
                <h1 className='font-bold tracking-widest text-2xl'>Contactos</h1>
                <div className='hero__data__contact shrink-0 pt-3'>
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill='none' strokeWidth="1" stroke="currentColor" className="size-5 mr-2 shrink-0">
@@ -72,7 +72,7 @@ const Footer: React.FC<FooterProps> = ({links, onBlog}) => {
             </div>
             
             {/* MAPA DO SITE */}
-            <div className='w-full h-full flex flex-col justify-items-start px-20 py-14 mapa'>
+            <div className='w-full h-full flex flex-col justify-items-start px-5 md:px-20 py-5 md:py-14 mapa'>
                <h1 className='font-bold tracking-widest text-2xl'>Mapa do site</h1>
                <ul className="pt-3">
                   {links.map((link) => (
@@ -98,9 +98,11 @@ const Footer: React.FC<FooterProps> = ({links, onBlog}) => {
             h-full 
             flex 
             flex-col 
-            justify-between 
-            px-20 
-            py-14
+            justify-between  
+            px-5 
+            md:px-20 
+            py-5 
+            md:py-14
             col-span-1
             sm:col-span-2
             lg:col-span-1
