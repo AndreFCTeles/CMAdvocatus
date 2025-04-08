@@ -75,7 +75,8 @@ const BlogPosts = () => {
                <hr className="customDivider mt-5 mb-10" />
 
                <div className={`
-                  p-5    
+                  p-2
+                  md:p-5    
                   w-full    
                   h-full
                   grid
