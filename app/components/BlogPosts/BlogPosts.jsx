@@ -100,7 +100,7 @@ const BlogPosts = () => {
                      }
 
                      return (
-                        <div key={post.id} className="w-full h-full overflow-hidden">
+                        <div key={post.id} className="h-full overflow-hidden mx-auto">{/*w-full*/}
                            <div className="px-2 md:px-5 py-2 md:py-5 max-w-[500px] max-h-[450px] transition-transform duration-1000 transform md:hover:scale-105 overflow-hidden">
                               <Link href={`/blog/${post.id}`} className="post">
                                  <div className="overflow-y-hidden max-h-[200px]">

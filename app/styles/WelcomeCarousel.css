@@ -72,11 +72,11 @@
 }
 
 .embla__button--prev {
-   left: 1rem;
+   left: 2rem;
 }
 
 .embla__button--next {
-   right: 1rem;
+   right: 2rem;
 }
 
 .embla__button:hover {
