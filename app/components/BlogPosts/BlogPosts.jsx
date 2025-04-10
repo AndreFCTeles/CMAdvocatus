@@ -63,28 +63,27 @@ const BlogPosts = () => {
                   className="
                   px-4
                   text-sm 
-                  text-[#ad9366] 
-                  hover:text-white 
+                  text-[#ad9366]
+                  hover:text-white
                   border-2 
-                  rounded-sm   
-                  border-white 
+                  rounded-sm
+                  border-white
                   hover:border-[#ad9366] 
-                  hover:bg-[#ad9366] 
+                  hover:bg-[#ad9366]
                   transition-colors
                ">Ver todos</Link>
                <hr className="customDivider mt-5 mb-10" />
 
                <div className={`
                   p-2
-                  md:p-5    
-                  w-full    
+                  md:p-5
                   h-full
                   grid
-                  grid-cols-1 
+                  grid-cols-1
                   md:${nPosts <= 2 ? 'grid-cols-' + nPosts : 'grid-cols-2'}
                   xl:${nPosts <= 3 ? 'grid-cols-' + nPosts : 'grid-cols-3'}
                   gap-10
-               `}>
+               `}>{/*w-full*/}
 
 
                   {nPosts > 3 && posts.slice(0, 3).map((post) => {

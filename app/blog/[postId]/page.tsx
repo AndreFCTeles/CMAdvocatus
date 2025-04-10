@@ -78,8 +78,8 @@ const SinglePostPage: React.FC = () => {
                   <p className='text-[#ad9366] text-sm px-20'>Por {post.author?.node?.name  || 'Autor desconhecido'}</p>
                   <div className='pt-5 text-neutral-500 text-lg w-full h-full px-20 pb-20' dangerouslySetInnerHTML={{ __html: post.content }} />
                   <div className='px-20 h-[100px] w-full bg-white sticky content-center top-[260px]'>
-                     <Link href={"/blog"} className='blogBack align-middle px-5 py-2'>Voltar a blog</Link>
-                     <Link href={"/"} className='blogBack align-middle px-5 py-2'>Voltar a início</Link>
+                     <Link href={"/blog"} className='blogBack text-sm align-middle px-5 py-2 mr-2'>Voltar a blog</Link>
+                     <Link href={"/"} className='blogBack text-sm align-middle px-5 py-2'>Voltar a início</Link>
                   </div>
                   <div
                      className="h-[300px] pb-5"
