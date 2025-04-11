@@ -121,7 +121,7 @@ const ContactForm: React.FC = () => {
 const Contact: React.FC = () => (
    <GoogleReCaptchaProvider
       type="v3"
-      siteKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}>
+      siteKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}>
       <ContactForm />
    </GoogleReCaptchaProvider>
 )
