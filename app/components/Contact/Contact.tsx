@@ -106,7 +106,12 @@ const ContactForm: React.FC = () => {
                className='p-3 mt-5 w-full resize-y bg-white' 
                required />
                <button type='submit' className='w-full py-2 mt-5 text-white'>Contactar</button>
-               {status && <p className="mt-5">{status}</p>}
+               <div 
+                  data-sitekey="6Le-rBIrAAAAAJQcW7K9sZV0kcznl8TZS5wGRGk2"
+                  data-callback="onSubmit"
+                  data-size="invisible">
+               </div>
+               {status && <p className="mt-5 text-white">{status}</p>}
             </form>
          </div>
       </div>
@@ -115,8 +120,8 @@ const ContactForm: React.FC = () => {
 
 const Contact: React.FC = () => (
    <GoogleReCaptchaProvider
-      siteKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
-      type="v2-invisible">
+      type="v3"
+      siteKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}>
       <ContactForm />
    </GoogleReCaptchaProvider>
 )
