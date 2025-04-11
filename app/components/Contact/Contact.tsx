@@ -1,47 +1,54 @@
 'use client';
-import React, { useState } from 'react';
+import React, { FormEvent, useCallback, useState } from 'react';
+import { GoogleReCaptchaProvider, useGoogleReCaptcha } from '@google-recaptcha/react';
 
-const Contact: React.FC = () => {
+const ContactForm: React.FC = () => {
    const [formData, setFormData] = useState({
       formName: '',
       formEmail: '',
       formTel: '',
-      //formDate: '',
       formMsg: '',
    });
    const [status, setStatus] = useState<string>('');
+   const { executeV2Invisible } = useGoogleReCaptcha(); 
 
    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
    };
 
-   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+   //const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+   const handleSubmit = useCallback(async (e: FormEvent) => {
       e.preventDefault();
-      setStatus('Sending...');
-
-      // Use your WordPress URL from env variables
-      const formID = "9886ed4"; // Replace with your actual CF7 form ID
-      const endpoint = `${process.env.NEXT_PUBLIC_WORDPRESS_API_URL}/contact-form-7/v1/contact-forms/${formID}/feedback`;
+      
+      if (!executeV2Invisible) {
+         setStatus('Erro ao carregar reCAPTCHA. Tente novamente.')
+         return
+      }
+      setStatus('A verificar reCAPTCHA...')
 
       try {
-         const res = await fetch(endpoint, {
+         const token = await executeV2Invisible();
+         //if (!token) throw new Error("No reCAPTCHA token obtained");
+
+         const res = await fetch('/api/contact', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            // CF7 expects a JSON payload with keys matching the form fields
-            body: JSON.stringify(formData),
-         });
-         const data = await res.json();
-         if (res.ok && data.status === 'mail_sent') {
-            setStatus('Message sent successfully!');
-            setFormData({ formName: '', formEmail: '', formTel: '', formMsg: '' });
-         } else {
-            setStatus('Error sending message: ' + (data.message || ''));
+            body: JSON.stringify({ ...formData, token }),
+         })
+         setStatus('A enviar...');
+         if (!res.ok) {
+            const { error } = await res.json();
+            throw new Error(error || "Erro na submissão de formulário");
          }
-      } catch (error) {
-         console.error('Submission error:', error);
-         setStatus('Error sending message.');
-      }
-   };
+            setFormData({ formName: "", formEmail: "", formTel: "", formMsg: "" }); // reset form
+         } catch (error) {
+            if (error instanceof Error) {
+               setStatus(error.message);
+            } else {
+               setStatus('Erro inesperado');
+            }
+         }
+      }, [executeV2Invisible, formData]);
 
    return (
       <div 
@@ -65,14 +72,39 @@ const Contact: React.FC = () => {
             <hr className="customDivider my-5" />
 
             <form className='pt-5 w-full md:w-auto' onSubmit={handleSubmit} >
-               <input type='text' name="formName" value={formData.formName} onChange={handleChange} placeholder='Nome' className='p-3 bg-white w-full' required />
+               <input 
+               type='text' 
+               name="formName" 
+               value={formData.formName} 
+               onChange={handleChange} 
+               placeholder='Nome' 
+               className='p-3 bg-white w-full' 
+               required />
                <div className='grid grid-cols-1 md:grid-cols-2 gap-5 pt-5'>
-                  {/*<input type='text' name="formName" value={formData.formName} placeholder='Nome Completo' className='p-3 bg-white' required />*/}
-                  <input type='email' name="formEmail" value={formData.formEmail} onChange={handleChange} placeholder='E-Mail' className='p-3 bg-white' required />
-                  <input type='tel' name="formTel" value={formData.formTel} onChange={handleChange} placeholder='Telefone' className='p-3 bg-white' />
-                  {/*<input type='date' name="formDate" value={formData.formDate} className='p-3 bg-white' />*/}
+                  <input 
+                  type='email' 
+                  name="formEmail" 
+                  value={formData.formEmail} 
+                  onChange={handleChange} 
+                  placeholder='E-Mail' 
+                  className='p-3 bg-white' 
+                  required />
+                  <input 
+                  type='tel' 
+                  name="formTel" 
+                  value={formData.formTel} 
+                  onChange={handleChange} 
+                  placeholder='Telefone' 
+                  className='p-3 bg-white' />
                </div>
-               <textarea name="formMsg" value={formData.formMsg} onChange={handleChange} placeholder='A sua mensagem' maxLength={1000} className='p-3 mt-5 w-full resize-y bg-white' required />
+               <textarea 
+               name="formMsg" 
+               value={formData.formMsg} 
+               onChange={handleChange} 
+               placeholder='A sua mensagem' 
+               maxLength={1000} 
+               className='p-3 mt-5 w-full resize-y bg-white' 
+               required />
                <button type='submit' className='w-full py-2 mt-5 text-white'>Contactar</button>
                {status && <p className="mt-5">{status}</p>}
             </form>
@@ -80,5 +112,13 @@ const Contact: React.FC = () => {
       </div>
    )
 }
+
+const Contact: React.FC = () => (
+   <GoogleReCaptchaProvider
+      siteKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
+      type="v2-invisible">
+      <ContactForm />
+   </GoogleReCaptchaProvider>
+)
 
 export default Contact
