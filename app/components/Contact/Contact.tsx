@@ -1,5 +1,6 @@
 'use client';
 import React, { FormEvent, useCallback, useState } from 'react';
+import Script from 'next/script';
 import { GoogleReCaptchaProvider, useGoogleReCaptcha } from '@google-recaptcha/react';
 
 const ContactForm: React.FC = () => {
@@ -11,6 +12,7 @@ const ContactForm: React.FC = () => {
    });
    const [status, setStatus] = useState<string>('');
    const { executeV2Invisible } = useGoogleReCaptcha(); 
+   const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
 
    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
@@ -51,77 +53,83 @@ const ContactForm: React.FC = () => {
       }, [executeV2Invisible, formData]);
 
    return (
-      <div 
-      id="agendar"
-      className="
-         w-full 
-         bg-[url('https://picsum.photos/1920/1080')]
-         bg-cover
-         bg-fixed
-      ">
-         <div className="
+      <>
+         {/* Include reCAPTCHA v3 script */}
+         <Script src={`https://www.google.com/recaptcha/api.js?render=${siteKey}`} strategy="afterInteractive" />
+         
+         <div 
+         id="agendar"
+         className="
             w-full 
-            px-10 md:px-5
-            py-[70px] 
-            text-center 
-            justify-center 
-            justify-items-center
-            imgOverlay
+            bg-[url('https://picsum.photos/1920/1080')]
+            bg-cover
+            bg-fixed
          ">
-            <h2 className='text-white text-3xl font-semibold'>Contacte-nos</h2>
-            <hr className="customDivider my-5" />
+            <div className="
+               w-full 
+               px-10 md:px-5
+               py-[70px] 
+               text-center 
+               justify-center 
+               justify-items-center
+               imgOverlay
+            ">
+               <h2 className='text-white text-3xl font-semibold'>Contacte-nos</h2>
+               <hr className="customDivider my-5" />
 
-            <form className='pt-5 w-full md:w-auto' onSubmit={handleSubmit} >
-               <input 
-               type='text' 
-               name="formName" 
-               value={formData.formName} 
-               onChange={handleChange} 
-               placeholder='Nome' 
-               className='p-3 bg-white w-full' 
-               required />
-               <div className='grid grid-cols-1 md:grid-cols-2 gap-5 pt-5'>
+               <form className='pt-5 w-full md:w-auto' onSubmit={handleSubmit} >
                   <input 
-                  type='email' 
-                  name="formEmail" 
-                  value={formData.formEmail} 
+                  type='text' 
+                  name="formName" 
+                  value={formData.formName} 
                   onChange={handleChange} 
-                  placeholder='E-Mail' 
-                  className='p-3 bg-white' 
+                  placeholder='Nome' 
+                  className='p-3 bg-white w-full' 
                   required />
-                  <input 
-                  type='tel' 
-                  name="formTel" 
-                  value={formData.formTel} 
+                  <div className='grid grid-cols-1 md:grid-cols-2 gap-5 pt-5'>
+                     <input 
+                     type='email' 
+                     name="formEmail" 
+                     value={formData.formEmail} 
+                     onChange={handleChange} 
+                     placeholder='E-Mail' 
+                     className='p-3 bg-white' 
+                     required />
+                     <input 
+                     type='tel' 
+                     name="formTel" 
+                     value={formData.formTel} 
+                     onChange={handleChange} 
+                     placeholder='Telefone' 
+                     className='p-3 bg-white' />
+                  </div>
+                  <textarea 
+                  name="formMsg" 
+                  value={formData.formMsg} 
                   onChange={handleChange} 
-                  placeholder='Telefone' 
-                  className='p-3 bg-white' />
-               </div>
-               <textarea 
-               name="formMsg" 
-               value={formData.formMsg} 
-               onChange={handleChange} 
-               placeholder='A sua mensagem' 
-               maxLength={1000} 
-               className='p-3 mt-5 w-full resize-y bg-white' 
-               required />
-               <button type='submit' className='w-full py-2 mt-5 text-white'>Contactar</button>
-               <div 
-                  data-sitekey="6Le-rBIrAAAAAJQcW7K9sZV0kcznl8TZS5wGRGk2"
-                  data-callback="onSubmit"
-                  data-size="invisible">
-               </div>
-               {status && <p className="mt-5 text-white">{status}</p>}
-            </form>
+                  placeholder='A sua mensagem' 
+                  maxLength={1000} 
+                  className='p-3 mt-5 w-full resize-y bg-white' 
+                  required />
+                  <button type='submit' className='w-full py-2 mt-5 text-white'>Contactar</button>
+                  <div 
+                     data-sitekey="6Le-rBIrAAAAAJQcW7K9sZV0kcznl8TZS5wGRGk2"
+                     data-callback="onSubmit"
+                     data-size="invisible">
+                  </div>
+                  {status && <p className="mt-5 text-white">{status}</p>}
+               </form>
+            </div>
          </div>
-      </div>
+      </>
    )
 }
 
 const Contact: React.FC = () => (
    <GoogleReCaptchaProvider
       type="v3"
-      siteKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}>
+      siteKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
+   >
       <ContactForm />
    </GoogleReCaptchaProvider>
 )

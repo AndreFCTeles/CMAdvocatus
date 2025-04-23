@@ -12,11 +12,16 @@
    display: flex;
 }
 
+.hero__data__contact__underlined {
+   text-decoration: underline rgb(173, 147, 102) 3px;
+}
+
 .header__wrapper {
    position: fixed;
    width: 100%;
    z-index: 10;
 }
+
 
 .heroLoader {
    border: 3px solid #f3f3f3;
