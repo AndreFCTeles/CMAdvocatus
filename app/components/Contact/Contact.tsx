@@ -113,9 +113,9 @@ const ContactForm: React.FC = () => {
                   required />
                   <button type='submit' className='w-full py-2 mt-5 text-white'>Contactar</button>
                   <div 
-                     data-sitekey="6Le-rBIrAAAAAJQcW7K9sZV0kcznl8TZS5wGRGk2"
-                     data-callback="onSubmit"
-                     data-size="invisible">
+                  data-sitekey="6Le-rBIrAAAAAJQcW7K9sZV0kcznl8TZS5wGRGk2"
+                  data-callback="onSubmit"
+                  data-size="invisible">
                   </div>
                   {status && <p className="mt-5 text-white">{status}</p>}
                </form>
