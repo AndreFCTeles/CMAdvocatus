@@ -35,15 +35,23 @@ const ContactForm: React.FC = () => {
          // Collect form data
          const form = e.currentTarget;
          const formData = new FormData(form);
-         formData.append("token", token);
+         //formData.append("token", token);
+         const payload = { ...formData, token };
 
          // Send data to our API route
+         const res = await fetch('/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+         })
+         /*
          const res = await fetch('/api/contact', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             //body: JSON.stringify({ ...formData, token }),
             body: JSON.stringify(Object.fromEntries(formData)),
          })
+         */
          //setStatus('A enviar...');
          if (!res.ok) {            
             const errorData = await res.json().catch(() => ({}));
