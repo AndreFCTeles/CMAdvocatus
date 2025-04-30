@@ -13,6 +13,11 @@ export const POST = async (req: NextRequest) =>{
             { status: 400 }
          )
       }
+      if (!token) {
+         return NextResponse.json({ error: 'Missing reCAPTCHA token' }, 
+         { status: 400 });
+      }
+
       
       // 1. Verify the reCAPTCHA token with Google
       const secretKey = process.env.RECAPTCHA_SECRET_KEY!;
@@ -29,6 +34,8 @@ export const POST = async (req: NextRequest) =>{
       });
       const verificationResult = await verifyResponse.json();
 
+      console.log("reCAPTCHA verification result:", verificationResult);
+
       if (!verificationResult.success) {
          // reCAPTCHA failed or token is invalid/expired
          return NextResponse.json({ error: "reCAPTCHA verification failed" }, { status: 400 });
@@ -38,7 +45,7 @@ export const POST = async (req: NextRequest) =>{
       const transporter = nodemailer.createTransport({
          host: process.env.SMTP_HOST,
          port: parseInt(process.env.SMTP_PORT || '465', 10),
-         secure: true, // true for port 465, false for port 587
+         secure: true, // true for port 465, false for port 587*
          auth: {
             user: process.env.SMTP_USER,
             pass: process.env.SMTP_PASS,

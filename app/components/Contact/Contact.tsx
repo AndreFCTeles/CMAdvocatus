@@ -1,6 +1,6 @@
 'use client';
-import React, { FormEvent, useCallback, useState } from 'react';
-import Script from 'next/script';
+import React, { FormEvent, useState } from 'react'; //useCallback,
+//import Script from 'next/script';
 import { GoogleReCaptchaProvider, useGoogleReCaptcha } from '@google-recaptcha/react';
 
 const ContactForm: React.FC = () => {
@@ -10,53 +10,82 @@ const ContactForm: React.FC = () => {
       formTel: '',
       formMsg: '',
    });
-   const [status, setStatus] = useState<string>('');
-   const { executeV2Invisible } = useGoogleReCaptcha(); 
+   //const [status, setStatus] = useState<string>('');
+   //const { executeV2Invisible } = useGoogleReCaptcha(); 
+   const { executeV3 } = useGoogleReCaptcha();
+   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
    const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+   console.log(siteKey);
 
    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
    };
 
    //const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-   const handleSubmit = useCallback(async (e: FormEvent) => {
+   //const handleSubmit = useCallback(async (e: FormEvent) => {
+   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      
+
+      /*
       if (!executeV2Invisible) {
          setStatus('Erro ao carregar reCAPTCHA. Tente novamente.')
          return
       }
       setStatus('A verificar reCAPTCHA...')
+      */
+
+      if (!executeV3) {
+         console.error("reCAPTCHA not yet loaded");
+         return;
+      }
 
       try {
-         const token = await executeV2Invisible();
+         //const token = await executeV2Invisible();
          //if (!token) throw new Error("No reCAPTCHA token obtained");
 
+         // Invoke invisible reCAPTCHA v3 and get the token
+         const token = await executeV3("contact_form_submit");
+         // Collect form data
+         const form = e.currentTarget;
+         const formData = new FormData(form);
+         formData.append("token", token);
+
+         // Send data to our API route
          const res = await fetch('/api/contact', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ ...formData, token }),
+            //body: JSON.stringify({ ...formData, token }),
+            body: JSON.stringify(Object.fromEntries(formData)),
          })
-         setStatus('A enviar...');
+         //setStatus('A enviar...');
          if (!res.ok) {
-            const { error } = await res.json();
-            throw new Error(error || "Erro na submissão de formulário");
+            //const { error } = await res.json();
+            //throw new Error(error || "Erro na submissão de formulário");
+            
+            const errorData = await res.json().catch(() => ({}));
+            throw new Error(errorData.error || "Submission failed");
          }
+            setStatus("success");
+            form.reset();
             setFormData({ formName: "", formEmail: "", formTel: "", formMsg: "" }); // reset form
+         /*
          } catch (error) {
             if (error instanceof Error) {
-               setStatus(error.message);
+               //setStatus(error.message);
             } else {
-               setStatus('Erro inesperado');
+               //setStatus('Erro inesperado');
             }
          }
-      }, [executeV2Invisible, formData]);
+         */
+
+         } catch (err) {
+            console.error(err);
+            setStatus("error");
+         }
+      };//, [executeV2Invisible, formData]);
 
    return (
       <>
-         {/* Include reCAPTCHA v3 script */}
-         <Script src={`https://www.google.com/recaptcha/api.js?render=${siteKey}`} strategy="afterInteractive" />
-         
          <div 
          id="agendar"
          className="
@@ -112,23 +141,22 @@ const ContactForm: React.FC = () => {
                   className='p-3 mt-5 w-full resize-y bg-white' 
                   required />
                   <button type='submit' className='w-full py-2 mt-5 text-white'>Contactar</button>
-                  <div 
-                  data-sitekey="6Le-rBIrAAAAAJQcW7K9sZV0kcznl8TZS5wGRGk2"
-                  data-callback="onSubmit"
-                  data-size="invisible">
-                  </div>
-                  {status && <p className="mt-5 text-white">{status}</p>}
+                  {status !== 'idle' && (
+                     <p className="mt-5 text-white">
+                        {status === 'success' ? "Mensagem enviada com sucesso!" : "Erro ao enviar mensagem. Tente novamente."}
+                     </p>
+                  )}
                </form>
             </div>
-         </div>
+         </div>   
       </>
    )
 }
 
 const Contact: React.FC = () => (
    <GoogleReCaptchaProvider
-      type="v3"
       siteKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
+      type="v3"
    >
       <ContactForm />
    </GoogleReCaptchaProvider>

@@ -13,6 +13,9 @@
 # testing
 /coverage
 
+# backups
+/app/components/Contact/bu.html
+
 # next.js
 /.next/
 /_next/
