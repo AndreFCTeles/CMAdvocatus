@@ -34,7 +34,7 @@ const ContactForm: React.FC = () => {
 
          // Collect form data
          const form = e.currentTarget;
-         const formData = new FormData(form);
+         //const formData = new FormData(form);
          //formData.append("token", token);
          const payload = { ...formData, token };
 
@@ -118,8 +118,7 @@ const ContactForm: React.FC = () => {
                      required />
                      <input 
                      name="formTel" 
-                     type='tel' 
-                     pattern="[0-9]{9}" 
+                     type='number' 
                      maxLength={9}
                      value={formData.formTel} 
                      onChange={handleChange} 
