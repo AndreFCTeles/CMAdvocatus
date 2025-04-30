@@ -54,7 +54,7 @@ export const POST = async (req: NextRequest) =>{
 
       const mailOptions = {
          from: `"Website Contact Form" <${process.env.SMTP_USER}>`,
-         to: process.env.CONTACT_TO,
+         to: process.env.SMTP_TO,
          subject: 'Novo contacto recebido via cmadvocatus.com',
          html: `
             <h2>Nova mensagem de contacto:</h2>
