@@ -1,5 +1,5 @@
 'use client';
-import React, { FormEvent, useState, useEffect } from 'react'; 
+import React, { useState, useEffect } from 'react'; 
 import { GoogleReCaptchaProvider, useGoogleReCaptcha } from '@google-recaptcha/react';
 
 const ContactForm: React.FC = () => {
@@ -21,7 +21,7 @@ const ContactForm: React.FC = () => {
       setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
    };
 
-   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
       if (!executeV3) {
@@ -109,8 +109,10 @@ const ContactForm: React.FC = () => {
                      className='p-3 bg-white' 
                      required />
                      <input 
-                     type='tel' 
                      name="formTel" 
+                     type='tel' 
+                     pattern="[0-9]{9}" 
+                     maxLength={9}
                      value={formData.formTel} 
                      onChange={handleChange} 
                      placeholder='Telefone' 
