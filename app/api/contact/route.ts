@@ -64,8 +64,22 @@ export const POST = async (req: NextRequest) =>{
             <p><strong>Conteúdo da mensagem:</strong><br />${formMsg}</p>
          `,
       }
+      console.log("🚀 Connecting to SMTP:", {
+         host: process.env.SMTP_HOST,
+         port: process.env.SMTP_PORT,
+         user: process.env.SMTP_USER,
+         from: process.env.SMTP_FROM,
+         to: process.env.SMTP_TO
+      });
+      console.log(mailOptions);
+      console.log("----------")
 
-      await transporter.sendMail(mailOptions)
+
+      //await transporter.sendMail(mailOptions)
+      console.log("📤 Attempting to send email...");
+      await transporter.sendMail(mailOptions);
+      console.log("✅ Email sent successfully!");
+
 
       return NextResponse.json({ success: true })
    } catch (error) {

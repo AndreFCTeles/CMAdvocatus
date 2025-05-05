@@ -44,19 +44,12 @@ const ContactForm: React.FC = () => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload),
          })
-         /*
-         const res = await fetch('/api/contact', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            //body: JSON.stringify({ ...formData, token }),
-            body: JSON.stringify(Object.fromEntries(formData)),
-         })
-         */
          //setStatus('A enviar...');
          if (!res.ok) {            
             const errorData = await res.json().catch(() => ({}));
             throw new Error(errorData.error || "Submission failed");
          }
+
             setStatus("success");
             // reset form
             form.reset();
