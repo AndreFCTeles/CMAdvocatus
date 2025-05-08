@@ -49,14 +49,15 @@ const HeroContent: React.FC<HeroProps> = ({ onBlog }) => {
             </div>
          </div>
          
-         {onBlog ? (
+         {!onBlog && (
             <button
                className="agendarLink py-3 px-10 hidden md:inline-block text-sm"
                onClick={() => scrollPageToSection("agendar")}
             >
                Agendar
             </button>
-         ) : (
+         )}
+         {onBlog && (
             <Link
                className="agendarLink py-3 px-10 hidden md:inline-block text-sm"
                href="/#agendar"
