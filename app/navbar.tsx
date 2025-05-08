@@ -50,7 +50,7 @@ const Navbar: React.FC<NavbarProps> = ({ links, onBlog }) => {
                { !onBlog ? 
                   <a onClick={() => {scrollPageToSection('carousel')}}>
                      { !logoImg ? 
-                        <div className='flex content-center items-center'>
+                        <div className='flex content-center items-center cursor-pointer'>
                            <svg 
                            xmlns="http://www.w3.org/2000/svg" 
                            fill="none" 
@@ -84,7 +84,7 @@ const Navbar: React.FC<NavbarProps> = ({ links, onBlog }) => {
                :
                   <Link href={'/#carousel'}>
                      {!logoImg ? 
-                        <div className='flex content-center items-center'>
+                        <div className='flex content-center items-center cursor-pointer'>
                            <svg 
                            xmlns="http://www.w3.org/2000/svg" 
                            fill="none" 
