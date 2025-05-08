@@ -7,6 +7,7 @@ import { scrollPageToSection } from '@/app/utils/general';
 
 const QuickGrid = () => {
    return (
+      <>
       <div className="
          grid 
          grid-cols-1 
@@ -143,6 +144,8 @@ const QuickGrid = () => {
             </a>
          </div>
       </div>
+      <p className='text-center'>^ TODO: Decidir função e conteúdo destes elementos ^</p>
+      </>
    )
 }
 

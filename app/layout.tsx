@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   title: "CM Advocatus",
   description: "Aplicação web desenvolvida por André Teles, para Carla Magalhães e CM Advocatus",
   verification: { 
-    google: "QdQgkDxzVMihSVKuSRU20F6f_f6hjm4wR1axD96VYZY"
+    google: "QdQgkDxzVMihSVKuSRU20F6f_f6hjm4wR1axD96VYZY" //verificação DNS para indexação
   }
 };
 
